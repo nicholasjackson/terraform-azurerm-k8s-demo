@@ -1,11 +1,11 @@
 resource "kubernetes_service" "gopher_search" {
   metadata {
-    name = "gopher_search"
+    name = "gopher-search"
   }
 
   spec {
     selector {
-      app = "${kubernetes_pod.example.metadata.0.labels.app}"
+      app = "${kubernetes_pod.gopher_search.metadata.0.labels.app}"
     }
 
     session_affinity = "ClientIP"
@@ -21,10 +21,10 @@ resource "kubernetes_service" "gopher_search" {
 
 resource "kubernetes_pod" "gopher_search" {
   metadata {
-    name = "gopher_search"
+    name = "gopher-search"
 
     labels {
-      app = "gopher_search"
+      app = "gopher-search"
     }
   }
 
@@ -33,10 +33,15 @@ resource "kubernetes_pod" "gopher_search" {
       image = "nicholasjackson/gopher_search:latest"
       name  = "gopher_search"
 
-      env = [
-        "DATABASE_URL=postgres://${var.azurerm_postgresql_server.test.name}@${var.db_user}:${var.db_pass}@${azurerm_postgresql_server.test.fqdn}:5432/gopher_search_production?sslmode=disable",
-        "GO_ENV=production",
-      ]
+      env {
+        name  = "DATABASE_URL"
+        value = "postgres://${azurerm_postgresql_server.test.name}@${var.db_user}:${var.db_pass}@${azurerm_postgresql_server.test.fqdn}:5432/gopher_search_production?sslmode=disable"
+      }
+
+      env {
+        name  = "GO_ENV"
+        value = "production"
+      }
     }
   }
 }

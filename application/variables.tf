@@ -9,7 +9,7 @@ variable "db_user" {
 }
 
 variable "db_pass" {
-  default = "postgres$Changeme34sdlj"
+  default = "Postgres$Changeme34sdlj"
 }
 
 variable "ssh_private_key" {}
