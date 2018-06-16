@@ -8,8 +8,13 @@ variable "db_user" {
   default = "postgres"
 }
 
-variable "db_pass" {
-  default = "Postgres$Changeme34sdlj"
+variable "jumpbox_user" {
+  default = "azureuser"
 }
 
 variable "ssh_private_key" {}
+variable "ssh_public_key" {}
+
+variable "depend" {
+  description = "Fake variable to bypass the need for depends_on at a module level"
+}

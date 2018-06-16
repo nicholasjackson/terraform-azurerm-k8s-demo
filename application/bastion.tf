@@ -1,3 +1,9 @@
+resource "random_string" "jumpbox_password" {
+  length           = 16
+  special          = true
+  override_special = "/@\" "
+}
+
 resource "azurerm_public_ip" "jumpbox" {
   name                         = "jumpbox-public-ip"
   location                     = "${var.location}"
@@ -70,16 +76,16 @@ resource "azurerm_virtual_machine" "jumpbox" {
 
   os_profile {
     computer_name  = "jumpbox"
-    admin_username = "azureuser"
-    admin_password = "Password1234!"
+    admin_username = "${var.jumpbox_user}"
+    admin_password = "${random_string.jumpbox_password.result}"
   }
 
   os_profile_linux_config {
     disable_password_authentication = true
 
     ssh_keys {
-      path     = "/home/azureuser/.ssh/authorized_keys"
-      key_data = "${file("~/.ssh/server_rsa.pub")}"
+      path     = "/home/${var.jumpbox_user}/.ssh/authorized_keys"
+      key_data = "${file("${var.ssh_public_key}")}"
     }
   }
 

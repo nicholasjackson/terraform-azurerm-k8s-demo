@@ -15,7 +15,8 @@ resource "azurerm_resource_group" "k8s" {
 }
 
 module "network" {
-  source              = "Azure/network/azurerm"
+  source = "Azure/network/azurerm"
+
   location            = "${var.location}"
   resource_group_name = "${azurerm_resource_group.k8s.name}"
 }
@@ -37,9 +38,11 @@ module "kubernetes" {
 
 module "application" {
   source = "./application"
+  depend = "${module.kubernetes.host}"
 
   location            = "${var.location}"
   resource_group_name = "${azurerm_resource_group.k8s.name}"
   subnets             = "${module.network.vnet_subnets[0]}"
+  ssh_public_key      = "${var.ssh_public_key}"
   ssh_private_key     = "${var.ssh_private_key}"
 }

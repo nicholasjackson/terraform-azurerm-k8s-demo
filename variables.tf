@@ -7,7 +7,7 @@ variable location {
 }
 
 variable "ssh_public_key" {
-  default = "~/.ssh/id_rsa.pub"
+  default = "~/.ssh/server_rsa.pub"
 }
 
 variable "ssh_private_key" {
@@ -15,11 +15,11 @@ variable "ssh_private_key" {
 }
 
 variable "dns_prefix" {
-  default = "k8stest"
+  default = "k8gopher"
 }
 
 variable cluster_name {
-  default = "k8stest"
+  default = "k8sgopher"
 }
 
 variable "agent_count" {

@@ -33,3 +33,7 @@ output "jumpbox_fqdn" {
 output "jumpbox_user" {
   value = "${module.application.jumpbox_user}"
 }
+
+output "app_URL" {
+  value = "${module.application.app_URL}"
+}
